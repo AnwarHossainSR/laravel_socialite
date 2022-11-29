@@ -20,7 +20,9 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
             $table->string('provider')->nullable();
-            $table->string('provider_id')->nullable();
+            $table->string('facebook_id')->nullable();
+            $table->string('google_id')->nullable();
+            $table->string('linkedin_id')->nullable();
             $table->text('provider_token')->nullable();
             $table->string('provider_refresh_token')->nullable();
             $table->string('avatar')->nullable();

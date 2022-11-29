@@ -10,20 +10,23 @@ class socialController extends Controller
 {
     public function provider($provider)
     {
+        if (!$this->validateProvider($provider)) {
+            return response()->json(['error' => 'Invalid Provider'], 400);
+        }
         return Socialite::driver($provider)->redirect();
     }
 
     public function providerCallback($provider)
     {
         try {
-            $providerUser = Socialite::driver('linkedin')->user();
+            $providerUser = Socialite::driver($provider)->user();
 
             $user = User::updateOrCreate([
-                'provider_id' => $providerUser->id,
+                'email' => $providerUser->email,
             ], [
                 'name' => $providerUser->name,
                 'email' => $providerUser->email,
-                'provider_id' => $providerUser->id,
+                $provider.'_id' => $providerUser->id,
                 'provider' => $provider,
                 'provider_token' => $providerUser->token,
                 'provider_refresh_token' => $providerUser->refreshToken,
@@ -33,9 +36,22 @@ class socialController extends Controller
 
             Auth::login($user);
 
-            return Auth::user();
+            dd(Auth::user());
         } catch (\Exception $e) {
             dd($e->getMessage());
         }
+    }
+
+    // social auth provider validation method for google,linkedin and facebook
+    public function validateProvider($provider)
+    {
+        $provider = strtolower($provider);
+        $providers = ['google', 'linkedin', 'facebook'];
+
+        if (in_array($provider, $providers)) {
+            return true;
+        }
+
+        return false;
     }
 }
