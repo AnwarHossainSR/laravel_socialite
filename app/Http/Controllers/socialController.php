@@ -13,20 +13,20 @@ class socialController extends Controller
         if (!$this->validateProvider($provider)) {
             return response()->json(['error' => 'Invalid Provider'], 400);
         }
-        return Socialite::driver($provider)->redirect();
+        return Socialite::driver($provider)->stateless()->redirect();
     }
 
     public function providerCallback($provider)
     {
         try {
-            $providerUser = Socialite::driver($provider)->user();
+            $providerUser = Socialite::driver($provider)->stateless()->user();
 
             $user = User::updateOrCreate([
                 'email' => $providerUser->email,
             ], [
                 'name' => $providerUser->name,
                 'email' => $providerUser->email,
-                $provider.'_id' => $providerUser->id,
+                $provider . '_id' => $providerUser->id,
                 'provider' => $provider,
                 'provider_token' => $providerUser->token,
                 'provider_refresh_token' => $providerUser->refreshToken,
@@ -35,8 +35,15 @@ class socialController extends Controller
             ]);
 
             Auth::login($user);
+            $authenticatedUser = Auth::user();
+            $result = [
+                'token_type' => 'Bearer',
+                //'token' => auth('api')->login($user),
+                'token' => $authenticatedUser->createToken($authenticatedUser->email)->plainTextToken,
+                'user' => $authenticatedUser
+            ];
 
-            dd(Auth::user());
+            dd($result);
         } catch (\Exception $e) {
             dd($e->getMessage());
         }

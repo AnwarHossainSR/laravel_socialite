@@ -32,20 +32,20 @@ return [
     ],
 
     'linkedin' => [
-        'client_id' => env('LINKDIN_CLIENT_ID'),
-        'client_secret' => env('LINKDIN_CLIENT_SECRET'),
-        'redirect' => 'http://localhost:8000/linkedin/callback',
+        'client_id' => env('LINKEDIN_CLIENT_ID'),
+        'client_secret' => env('LINKEDIN_CLIENT_SECRET'),
+        'redirect' => env('LINKEDIN_REDIRECT_URI'),
     ],
 
     'google' => [
         'client_id' => env('GOOGLE_CLIENT_ID'),
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),
-        'redirect' => 'http://localhost:8000/google/callback',
+        'redirect' => env('GOOGLE_REDIRECT_URI'),
     ],
     'facebook' => [
         'client_id' => env('FACEBOOK_CLIENT_ID'),
         'client_secret' => env('FACEBOOK_CLIENT_SECRET'),
-        'redirect' => 'http://localhost:8000/facebook/callback',
+        'redirect' => env('FACEBOOK_REDIRECT_URI'),
     ],
 
 ];
