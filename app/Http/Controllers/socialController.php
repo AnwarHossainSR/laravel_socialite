@@ -35,12 +35,15 @@ class socialController extends Controller
             ]);
 
             Auth::login($user);
-            $authenticatedUser = Auth::user();
+
+            /** @var \App\Models\User */
+
+            $currentUser = Auth::user();
             $result = [
                 'token_type' => 'Bearer',
                 //'token' => auth('api')->login($user),
-                'token' => $authenticatedUser->createToken($authenticatedUser->email)->plainTextToken,
-                'user' => $authenticatedUser
+                'token' => $currentUser->createToken($currentUser->email)->plainTextToken,
+                'user' => $currentUser
             ];
 
             dd($result);
