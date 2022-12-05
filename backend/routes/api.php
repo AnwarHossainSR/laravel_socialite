@@ -8,5 +8,8 @@ use Illuminate\Support\Facades\Route;
 //     Route::get('/login/{provider}', [socialController::class, 'provider']);
 //     Route::get('/{provider}/callback', [socialController::class, 'providerCallback']);
 // });
-Route::get('/login/{provider}', [socialController::class, 'provider']);
-Route::get('/{provider}/callback', [socialController::class, 'providerCallback']);
+
+Route::middleware(['cors'])->group(function () {
+    Route::get('/login/{provider}', [socialController::class, 'provider']);
+    Route::get('/{provider}/callback', [socialController::class, 'providerCallback']);
+});

@@ -13,7 +13,10 @@ class socialController extends Controller
         if (!$this->validateProvider($provider)) {
             return response()->json(['error' => 'Invalid Provider'], 400);
         }
-        return Socialite::driver($provider)->stateless()->redirect();
+        //return Socialite::driver($provider)->stateless()->redirect();
+        return response()->json([
+            'url' => Socialite::driver('google')->stateless()->redirect()->getTargetUrl(),
+        ]);
     }
 
     public function providerCallback($provider)
@@ -46,7 +49,7 @@ class socialController extends Controller
                 'user' => $currentUser
             ];
 
-            dd($result);
+            return response()->json($result, 200);
         } catch (\Exception $e) {
             dd($e->getMessage());
         }
