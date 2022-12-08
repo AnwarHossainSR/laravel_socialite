@@ -15,7 +15,7 @@ class socialController extends Controller
         }
         //return Socialite::driver($provider)->stateless()->redirect();
         return response()->json([
-            'url' => Socialite::driver('google')->stateless()->redirect()->getTargetUrl(),
+            'url' => Socialite::driver($provider)->stateless()->redirect()->getTargetUrl(),
         ]);
     }
 
